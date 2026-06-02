@@ -113,10 +113,10 @@ h1{font-size:15px;color:var(--cy);letter-spacing:3px;text-transform:uppercase;te
       <div class="editor-hdr">
         <span class="editor-hdr-title">STRUDEL EDITOR</span>
         <div class="editor-btns">
-          <button class="ed-btn run" id="edRunBtn"  onclick="runStrudel()">&#9654; RUN</button>
-          <button class="ed-btn stop"               onclick="stopStrudel()">&#9632; STOP</button>
-          <button class="ed-btn auto" id="edAutoBtn" onclick="toggleLiveAuto()">&#10227; AUTO</button>
-          <button class="ed-btn clr"                onclick="clearLiveEditor()">&#10005; CLEAR</button>
+          <button class="ed-btn run" id="edRunBtn"  onclick="runStrudel()">RUN</button>
+          <button class="ed-btn stop"               onclick="stopStrudel()">STOP</button>
+          <button class="ed-btn auto" id="edAutoBtn" onclick="toggleLiveAuto()">AUTO</button>
+          <button class="ed-btn clr"                onclick="clearLiveEditor()">CLEAR</button>
         </div>
       </div>
       <textarea id="strudelEditor" spellcheck="false" placeholder="// Click a snippet on the left to add a layer, or write Strudel code directly.
@@ -144,8 +144,8 @@ s(&quot;bd*4, ~ sd ~ sd, hh*8&quot;).room(0.2)
         <i class="iico" data-tip="Save your current editor as a named template.&#10;Templates persist between sessions.&#10;Click a saved name to reload it."></i>
       </div>
       <div class="tmpl-btns">
-        <button class="ed-btn" onclick="loadStarterTemplate()" style="border-color:var(--acc);color:var(--acc)">&#11088; STARTER SESSION</button>
-        <button class="ed-btn" id="tmplSaveBtn">&#128190; SAVE CURRENT</button>
+        <button class="ed-btn" onclick="loadStarterTemplate()" style="border-color:var(--acc);color:var(--acc)">STARTER SESSION</button>
+        <button class="ed-btn" id="tmplSaveBtn">SAVE CURRENT</button>
       </div>
       <div class="tmpl-list" id="tmplList"></div>
     </div>
@@ -349,19 +349,19 @@ function runStrudel() {
   const compressed = LZString.compressToEncodedURIComponent(code);
   document.getElementById('strudelFrame').src = `https://strudel.cc/?${compressed}`;
   const btn = document.getElementById('edRunBtn');
-  if (btn) { btn.classList.add('on'); btn.textContent = '▶ RUNNING'; }
+  if (btn) { btn.classList.add('on'); btn.textContent = 'RUNNING'; }
 }
 
 function stopStrudel() {
   document.getElementById('strudelFrame').src = 'about:blank';
   const btn = document.getElementById('edRunBtn');
-  if (btn) { btn.classList.remove('on'); btn.textContent = '▶ RUN'; }
+  if (btn) { btn.classList.remove('on'); btn.textContent = 'RUN'; }
 }
 
 function toggleLiveAuto() {
   _liveAuto = !_liveAuto;
   const btn = document.getElementById('edAutoBtn');
-  if (btn) { btn.classList.toggle('on', _liveAuto); btn.textContent = _liveAuto ? '⟳ AUTO ON' : '⟳ AUTO'; }
+  if (btn) { btn.classList.toggle('on', _liveAuto); btn.textContent = _liveAuto ? 'AUTO ON' : 'AUTO'; }
 }
 
 function _scheduleLiveRun() {
