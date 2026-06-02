@@ -15,7 +15,7 @@
   --acc:#c0392b;--cy:#c0392b;--gn:#1a6b3a;--yw:#b07800;
   --rd:#c0392b;--tx:#0d0d0f;--mt:#888888;
 }
-body{background:var(--bg);color:var(--tx);font-family:'Inter',sans-serif;font-size:13px;padding:28px 40px 60px;min-height:100vh}
+body{background:var(--bg);color:var(--tx);font-family:'Inter',sans-serif;font-size:13px;padding:28px 40px 60px;min-height:100vh;overflow-x:hidden}
 header{display:flex;align-items:flex-end;justify-content:space-between;padding-bottom:20px;margin-bottom:20px;border-bottom:2px solid var(--tx);flex-wrap:wrap;gap:12px}
 h1{font-size:28px;font-weight:900;letter-spacing:-0.5px;text-transform:uppercase;color:var(--tx);line-height:1}
 .sub{font-size:9px;color:var(--mt);letter-spacing:2px;text-transform:uppercase;margin-top:5px}
@@ -116,8 +116,7 @@ h1{font-size:28px;font-weight:900;letter-spacing:-0.5px;text-transform:uppercase
       <div class="editor-hdr">
         <span class="editor-hdr-title">STRUDEL EDITOR</span>
         <div class="editor-btns">
-          <button class="ed-btn run" id="edRunBtn"  onclick="runStrudel()">RUN</button>
-          <button class="ed-btn stop"               onclick="stopStrudel()">STOP</button>
+          <button class="ed-btn run" id="edRunBtn"  onclick="runStrudel()">RUN IN STRUDEL</button>
           <button class="ed-btn auto" id="edAutoBtn" onclick="toggleLiveAuto()">AUTO</button>
           <button class="ed-btn clr"                onclick="clearLiveEditor()">CLEAR</button>
         </div>
@@ -132,7 +131,7 @@ note(&quot;&lt;g2 a2 b2 d3&gt;&quot;).fast(4).sound(&quot;triangle&quot;).room(0
 s(&quot;bd*4, ~ sd ~ sd, hh*8&quot;).room(0.2)
 "></textarea>
       <div class="editor-footer">
-        Click snippet &#8594; APPEND layer &nbsp;&#183;&nbsp; Shift+click &#8594; REPLACE all &nbsp;&#183;&nbsp; Ctrl/&#8984;+Enter &#8594; RUN &nbsp;&#183;&nbsp; prefix line with <code style="color:var(--cy)">//</code> to mute a voice
+        Click snippet to APPEND &nbsp;·&nbsp; Shift+click to REPLACE &nbsp;·&nbsp; Ctrl/Cmd+Enter to RUN &nbsp;·&nbsp; prefix with // to mute a voice
       </div>
     </div>
   </div>
@@ -164,14 +163,11 @@ s(&quot;bd*4, ~ sd ~ sd, hh*8&quot;).room(0.2)
 
   </div>
 
-  <!-- Strudel output iframe -->
-  <div class="strudel-out-wrap">
-    <div class="strudel-out-hdr">
-      <div class="dot" style="background:var(--gn)"></div>
-      STRUDEL LIVE — visualizers · sliders · punchcard · scope appear here when running
-      <a href="https://strudel.cc" target="_blank">open strudel.cc &#8599;</a>
-    </div>
-    <iframe id="strudelFrame" src="about:blank" allow="autoplay; microphone" frameborder="0"></iframe>
+  <!-- Run banner -->
+  <div id="runBanner" style="display:none;background:var(--tx);color:var(--p1);padding:14px 18px;border-radius:4px;margin-bottom:14px;display:none;align-items:center;gap:14px;font-family:'Inter',sans-serif">
+    <span style="font-size:11px;font-weight:600;letter-spacing:.5px">Code sent to Strudel — press PLAY inside the new tab to start audio.</span>
+    <button onclick="runStrudel()" style="margin-left:auto;padding:5px 14px;background:transparent;border:1.5px solid rgba(255,255,255,.5);color:#fff;font-family:'Inter',sans-serif;font-size:8px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;border-radius:2px;font-weight:700">RUN AGAIN</button>
+  </div>
   </div>
 
 </div><!-- end #liveTab -->
@@ -350,15 +346,17 @@ function runStrudel() {
     console.warn('lz-string not loaded yet'); return;
   }
   const compressed = LZString.compressToEncodedURIComponent(code);
-  document.getElementById('strudelFrame').src = `https://strudel.cc/?${compressed}`;
+  window.open(`https://strudel.cc/?${compressed}`, '_blank');
+  const banner = document.getElementById('runBanner');
+  if (banner) banner.style.display = 'flex';
   const btn = document.getElementById('edRunBtn');
-  if (btn) { btn.classList.add('on'); btn.textContent = 'RUNNING'; }
+  if (btn) { btn.classList.add('on'); btn.textContent = 'OPENED'; setTimeout(() => { btn.classList.remove('on'); btn.textContent = 'RUN'; }, 2000); }
 }
 
 function stopStrudel() {
-  document.getElementById('strudelFrame').src = 'about:blank';
-  const btn = document.getElementById('edRunBtn');
-  if (btn) { btn.classList.remove('on'); btn.textContent = 'RUN'; }
+  // no-op: playback is in a separate Strudel tab now
+  const banner = document.getElementById('runBanner');
+  if (banner) banner.style.display = 'none';
 }
 
 function toggleLiveAuto() {
